@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JavaScript Scheduler: Context menu for external items</title>
+
+ 
+
+  <link href="external.css" type="text/css" rel="stylesheet" />
+
+  <script src="js/daypilot/daypilot-all.min.js"></script>
+</head>
+<body>
+
+
+<div class="main">
+  <div class="left">
+    <div class="queue">
+      <div class="queue-title">Unscheduled Tasks</div>
+      <div class="queue-list">
+        <div class="queue-item" data-text="Task 1" data-duration="2" data-id="1"></div>
+        <div class="queue-item" data-text="Task 2" data-duration="3" data-id="2"></div>
+      </div>
+    </div>
+  </div>
+  <div class="right">
+    <div id="dp"></div>
+    <div class="generated"></div>
+  </div>
+
+
+</div>
+
+<script>
+  var dp = new DayPilot.Scheduler("dp", {
+    timeHeaders: [{"groupBy":"Month"},{"groupBy":"Day","format":"d"}],
+    scale: "Day",
+    days: DayPilot.Date.today().daysInMonth(),
+    startDate: DayPilot.Date.today().firstDayOfMonth(),
+    timeRangeSelectedHandling: "Enabled",
+    onTimeRangeSelected: function (args) {
+      var dp = this;
+      DayPilot.Modal.prompt("Create a new event:", "Event 1").then(function(modal) {
+        dp.clearSelection();
+        if (!modal.result) { return; }
+        dp.events.add(new DayPilot.Event({
+          start: args.start,
+          end: args.end,
+          id: DayPilot.guid(),
+          resource: args.resource,
+          text: modal.result
+        }));
+      });
+    },
+  });
+  dp.resources = [
+    {name: "Resource 1", id: "R1"},
+    {name: "Resource 2", id: "R2"},
+    {name: "Resource 3", id: "R3"},
+    {name: "Resource 4", id: "R4"},
+    {name: "Resource 5", id: "R5"},
+    {name: "Resource 6", id: "R6"},
+    {name: "Resource 7", id: "R7"},
+    {name: "Resource 8", id: "R8"},
+    {name: "Resource 9", id: "R9"},
+  ];
+  dp.events.list = [];
+  dp.init();
+</script>
+
+
+<script>
+  var menu = new DayPilot.Menu({
+    items: [
+      {
+        text: "Edit...",
+        onClick: function(args) {
+          var form = [
+            { name: "Text", id: "text"},
+            { name: "Duration", id: "duration", options: [
+                {name: "1 day", id: 1},
+                {name: "2 days", id: 2},
+                {name: "3 days", id: 3},
+                {name: "4 days", id: 4},
+              ]},
+          ];
+          DayPilot.Modal.form(form, args.source.dataset).then(function(modal) {
+            if (modal.canceled) {
+              return;
+            }
+            var result = modal.result;
+            for (var name in result) {
+              args.source.dataset[name] = result[name];
+            }
+          });
+        }
+      },
+      {
+        text: "Delete",
+        onClick: function(args) {
+          var element = args.source;
+
+          // doesn't work in IE
+          element.remove();
+        }
+      },
+    ]
+  });
+
+  var items = Array.apply(null, document.querySelectorAll(".queue-item"));
+  items.forEach(function(item) {
+    makeDraggable(item);
+    activateContextMenu(item);
+    attachActiveArea(item);
+  });
+
+  function makeDraggable(element) {
+    var durationInDays = parseInt(element.dataset.duration, 10);
+    var durationInSeconds = durationInDays * 1440 * 60;
+
+    var id = element.dataset.id;
+    var text = element.dataset.text;
+
+    DayPilot.Scheduler.makeDraggable({
+      element: element,
+      text: text,
+      duration: durationInSeconds,
+      id: id
+    });
+  }
+
+  function activateContextMenu(element) {
+    element.addEventListener("contextmenu", function(ev) {
+      ev.preventDefault();
+      menu.show(element);
+    });
+  }
+
+  function attachActiveArea(element) {
+    var areas = [
+      {
+        top: 8,
+        right: 8,
+        height: 14,
+        html: "&ctdot;", // three dots
+        visibility: "Hover",
+        action: "ContextMenu",
+        menu: menu,
+        style: "font-size: 12px; background-color: rgba(255, 255, 255, .5); border: 1px solid #aaa; padding: 3px 5px; cursor:pointer; color: #333;"
+      }
+    ];
+
+    var source = element;
+    DayPilot.Areas.attach(element, source, { areas: areas});
+  }
+</script>
+
+</body>
+</html>
