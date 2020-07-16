@@ -220,7 +220,8 @@ section
 }
 .button
 {
-	display: inline-block;
+	margin-left: 700px;
+	margin-top: -44px;
 	height: 51px;
 	background: #283290;
 }
