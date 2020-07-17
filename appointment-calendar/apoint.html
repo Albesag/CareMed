@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Appointment Reuest</title>
+  <meta charset="utf-8">
+    <title>Calendar App</title><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css'>
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css'><link rel="stylesheet" href="./style.css">
+<style>
+        h3 {text-align: center;}
+
+        
+        </style>
+</head>
+<body>
+    <h3>Request Appointment</h3>
+
+<br><br>
+    <div class="container">
+        <div class="row">
+            
+            
+        </div>
+        <br>
+        <div class="row">
+            <div class="calendar col-md-8 offset-md-2">
+                <div>
+                    <div class="card-header bg-primary">
+                        <ul>
+                            <li id="month" class="text-white text-uppercase text-center">
+                            </li>
+                            <li id="year" class="text-white text-uppercase text-center">
+                            </li>
+                        </ul>
+                    </div>
+                    <table class="table calendar table-bordered table-responsive-sm" id="calendar">
+                        <thead>
+                            <tr class="weekdays bg-dark">
+                              <th scope="col" class="text-white text-center">Mo</th>
+                              <th scope="col" class="text-white text-center">Tu</th>
+                              <th scope="col" class="text-white text-center">We</th>
+                              <th scope="col" class="text-white text-center">Th</th>
+                              <th scope="col" class="text-white text-center">Fr</th>
+                              <th scope="col" class="text-white text-center">Sa</th>
+                              <th scope="col" class="text-white text-center">Su</th>
+                            </tr>
+                          </thead>
+                        <tbody class="days bg-light" id="days"></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <br><hr>
+
+        <div class="row">
+            <div class="col offset-md-1">
+                <form id="form_create_appointment">
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label class="required">Date</label>
+                            <input class="form-control date-input" type="text" id="date" data-trigger="hover" data-toggle="popover" title="Date" data-content="You can select any date from today clicking on the number in the calendar" required>
+                        </div>
+                        <div class="col form-group">
+                            <label>Symptomes</label>
+                            <input class="form-control" type="text" id="description">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label class="required">Start Time</label>
+                            <input class="form-control time-input" type="text" id="start_time" required>
+                        </div>
+                        <div class="col form-group">
+                            <label class="required">End Time</label>
+                            <input class="form-control time-input" type="text" id="end_time" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <button type="button" class="btn btn-warning btn-block" id="clear" onclick="clear_input()">Clear Form</button>
+                        </div>
+                        <div class="col form-group">
+                            <button type="button" class="btn btn-primary btn-block" id="submit" onclick="make_appointment()" disabled="disabled">Make Appointment</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+          
+        <br><br><br>
+       
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/popper.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
